@@ -45,6 +45,7 @@ gameapctl panel install \
   --port=80 \
   --with-daemon
 ```
+***
 > [!WARNING]
 > **Upgrade GameAP to the latest version:**
 ```
@@ -55,6 +56,7 @@ gameapctl panel upgrade
 ```
 gameapctl daemon upgrade
 ```
+***
 > [!WARNING]
 > **To daemon control you can use following commands:**
 ```
@@ -62,6 +64,7 @@ gameapctl daemon start
 gameapctl daemon restart
 gameapctl daemon stop
 ```
+***
 > [!WARNING]
 > **Web UI**
 ```
