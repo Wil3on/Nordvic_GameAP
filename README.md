@@ -63,6 +63,15 @@ gameapctl daemon restart
 gameapctl daemon stop
 ```
 > [!WARNING]
+> **Web UI**
+```
+gameapctl ui
+```
+**Access to UI**
+URL1: http://localhost:17080
+URL2: http://127.0.0.1:17080
+
+> [!WARNING]
 > **Install GameAP Control**
 > Use following commands to install gameapctl on Linux x86-64:
 ```
