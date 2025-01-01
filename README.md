@@ -57,10 +57,10 @@ gameapctl daemon upgrade
 gameapctl daemon start
 gameapctl daemon restart
 gameapctl daemon stop
-Install GameAP Control
 ```
 > [!WARNING]
-> **Use following commands to install gameapctl on Linux x86-64:**
+> **Install GameAP Control**
+> Use following commands to install gameapctl on Linux x86-64:
 ```
 curl -OL https://github.com/gameap/gameapctl/releases/download/v0.9.4/gameapctl-v0.9.4-linux-amd64.tar.gz
 ```
