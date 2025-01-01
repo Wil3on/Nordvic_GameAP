@@ -26,6 +26,9 @@ bash <(curl -s https://gameap.com/install.sh) \
 ```
 sudo systemctl enable gameap-daemon
 ```
+```
+sudo systemctl status gameap-daemon
+```
 *** 
 > [!NOTE]
 > GameAP tips & tricks: gameapctl. GameAP Control. Gameapctrl is a tool for managing GameAP environment parts. You can easily install or upgrade GameAP using this utily.
