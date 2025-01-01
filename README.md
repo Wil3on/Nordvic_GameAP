@@ -77,6 +77,11 @@ URL1: http://localhost:17080
 URL2: http://127.0.0.1:17080
 
 Check port, it may be different
+
+Add new host and ip, EX:
+```
+gameapctl ui --host localhost --port 17081
+```
 ***
 > [!WARNING]
 > **Install GameAP Control**
