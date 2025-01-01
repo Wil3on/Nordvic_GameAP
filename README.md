@@ -26,6 +26,7 @@ bash <(curl -s https://gameap.com/install.sh) \
 ```
 sudo systemctl enable gameap-daemon
 ```
+**To check service status:**
 ```
 sudo systemctl status gameap-daemon
 ```
