@@ -15,6 +15,8 @@ DEV Version GameAP v3.2.0
 
 The update is coming very soon, but you can already test the new version now. To do this, you can install the develop version:S
 
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
 ```
 bash <(curl -s https://gameap.com/install.sh) \
   --github \
