@@ -13,10 +13,17 @@ DEV Version GameAP v3.2.0
 - Design has been updated
 - Working with game servers is now much more convenient, and the load on the web server is reduced
 
-The update is coming very soon, but you can already test the new version now. To do this, you can install the develop version:S
+The update is coming very soon, but you can already test the new version now. To do this, you can install the develop version
 
 > [!NOTE]
-> Useful information that users should know, even when skimming content.
+>DEV Version GameAP v3.2.0
+- Completely new UI
+- Everything is done in a single application using Vue
+- Bootstrap has been replaced with Tailwind
+- Design has been updated
+- Working with game servers is now much more convenient, and the load on the web server is reduced
+
+The update is coming very soon, but you can already test the new version now. To do this, you can install the develop version
 ```
 bash <(curl -s https://gameap.com/install.sh) \
   --github \
