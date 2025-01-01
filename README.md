@@ -22,6 +22,10 @@ bash <(curl -s https://gameap.com/install.sh) \
   --github \
   --branch=develop
 ```
+**Enable the Service: Run the following command to configure the service to start automatically on boot:**
+```
+sudo systemctl enable gameap-daemon
+```
 *** 
 > [!NOTE]
 > GameAP tips & tricks: gameapctl. GameAP Control. Gameapctrl is a tool for managing GameAP environment parts. You can easily install or upgrade GameAP using this utily.
