@@ -10,7 +10,7 @@ Nordvic Game Servers
 
 *** 
 > [!NOTE]
->DEV Version GameAP v3.2.0
+>**DEV Version GameAP v3.2.0**
 >- Completely new UI
 >- Everything is done in a single application using Vue
 >- Bootstrap has been replaced with Tailwind
@@ -24,12 +24,10 @@ bash <(curl -s https://gameap.com/install.sh) \
 ```
 *** 
 > [!NOTE]
-> GameAP tips & tricks: gameapctl
-> GameAP Control
-> gameapctrl is a tool for managing GameAP environment parts. You can easily install or upgrade GameAP using this utily.
+> GameAP tips & tricks: gameapctl. GameAP Control. Gameapctrl is a tool for managing GameAP environment parts. You can easily install or upgrade GameAP using this utily.
 
 > [!WARNING]
-> Install complete set (API+Daemon) using GameAP Control:
+> **Install complete set (API+Daemon) using GameAP Control:**
 ```
 gameapctl panel install \
   --path=/var/www/gameap \
@@ -40,17 +38,17 @@ gameapctl panel install \
   --with-daemon
 ```
 > [!WARNING]
-> Upgrade GameAP to the latest version:
+> **Upgrade GameAP to the latest version:**
 ```
 gameapctl panel upgrade
 ```
 > [!WARNING]
-> Upgrade GameAP Daemon to the latest version:
+> **Upgrade GameAP Daemon to the latest version:**
 ```
 gameapctl daemon upgrade
 ```
 > [!WARNING]
-> To daemon control you can use following commands:
+> **To daemon control you can use following commands:**
 ```
 gameapctl daemon start
 gameapctl daemon restart
@@ -58,7 +56,7 @@ gameapctl daemon stop
 Install GameAP Control
 ```
 > [!WARNING]
-> Use following commands to install gameapctl on Linux x86-64:
+> **Use following commands to install gameapctl on Linux x86-64:**
 ```
 curl -OL https://github.com/gameap/gameapctl/releases/download/v0.9.4/gameapctl-v0.9.4-linux-amd64.tar.gz
 ```
