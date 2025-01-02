@@ -29,6 +29,8 @@ Run command:
 ```
 sudo apt install nodejs npm
 ```
+
+**Install develop VERSION**
 ```
 bash <(curl -s https://gameap.com/install.sh) \
   --github \
