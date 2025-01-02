@@ -19,6 +19,7 @@ Nordvic Game Servers
 > The update is coming very soon, but you can already test the new version now. To do this, you can install the develop version
 
 To avoid npm error
+
 `
 Building styles ...
 failed to build styles: failed to install dependencies: exec: "npm": executable file not found in $PATH
