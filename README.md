@@ -24,6 +24,7 @@ To avoid npm error
 Building styles ...
 failed to build styles: failed to install dependencies: exec: "npm": executable file not found in $PATH
 `
+
 Run command:
 ```
 sudo apt install nodejs npm
