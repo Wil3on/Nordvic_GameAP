@@ -11,6 +11,7 @@ Vars
 | Var | Default | Info |
 | :---:   | :---: | :---: |
 | setMaxFps | 60 | Server FPS |
+| setMaxFps | 60 | Server FPS |
 *** 
 > [!NOTE]
 >**DEV Version GameAP v3.2.0**
