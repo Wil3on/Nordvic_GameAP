@@ -10,9 +10,11 @@ Nordvic Game Servers
 Vars
 | Var | Default | Info |
 | :---:   | :---: | :---: |
-| setMaxFps | 60 | Server FPS |
+| setMaxFps | 60 | sets max FPS limit - useful for a server, or to force a client's max FPS. |
 | autoreload | 60 | reloads the scenario when the session ends after the provided delay, without shutting down the server. Value is in seconds |
-| setMaxFps | 60 | Server FPS |
+| loadSessionSave | 60 | -loadSessionSave allows the game to load a previous game session.
+
+It can be used alone to load the latest save, or with a specific save file name. |
 | setMaxFps | 60 | Server FPS |
 *** 
 > [!NOTE]
