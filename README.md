@@ -8,9 +8,9 @@ Nordvic Game Servers
 ./ArmaReforgerServer -bindIP {ip} -bindPort {port} -a2sIpAddress {ip} -a2sPort {query_port} -logStats {logStatsInSec} -gproj ./addons/data/ArmaReforger.gproj -config ./config.json -profile ./profile -backendlog -nothrow -listScenarios -maxFPS {setMaxFps} -autoreload {autoreload} -loadSessionSave {loadSessionSave}
 ```
 Vars
-| Var | Default | Info | #2    |
-| :---:   | :---: | :---: | :---: |
-| setMaxFps | 60   | Server FPS   | 283   |
+| Var | Default | Info |
+| :---:   | :---: | :---: |
+| setMaxFps | 60 | Server FPS |
 *** 
 > [!NOTE]
 >**DEV Version GameAP v3.2.0**
