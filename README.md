@@ -11,6 +11,8 @@ Vars
 | Var | Default | Info |
 | :---:   | :---: | :---: |
 | setMaxFps | 60 | Server FPS |
+| autoreload | 60 | reloads the scenario when the session ends after the provided delay, without shutting down the server. Value is in seconds |
+| setMaxFps | 60 | Server FPS |
 | setMaxFps | 60 | Server FPS |
 *** 
 > [!NOTE]
