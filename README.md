@@ -9,7 +9,7 @@ Nordvic Game Servers
 ```
 Vars
 Var | Default | Info | #3 |
---- | --- | --- | --- |--- |--- 
+--- | --- | --- |
 setMaxFps | 60 | Server FPS | 
 *** 
 > [!NOTE]
