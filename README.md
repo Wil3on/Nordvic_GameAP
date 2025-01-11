@@ -12,7 +12,7 @@ Vars
 | :---:   | :---: | :---: |
 | setMaxFps | 60 | sets max FPS limit - useful for a server, or to force a client's max FPS. |
 | autoreload | 60 | reloads the scenario when the session ends after the provided delay, without shutting down the server. Value is in seconds |
-| loadSessionSave | 60 | -loadSessionSave allows the game to load a previous game session. It can be used alone to load the latest save, or with a specific save file name. |
+| loadSessionSave | 60 | allows the game to load a previous game session. It can be used alone to load the latest save, or with a specific save file name. Leave it empty if load autosave |
 | setMaxFps | 60 | Server FPS |
 *** 
 > [!NOTE]
