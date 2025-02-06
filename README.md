@@ -107,10 +107,10 @@ gameapctl ui --host localhost --port 17081
 > **Install GameAP Control**
 > Use following commands to install gameapctl on Linux x86-64:
 ```
-curl -OL https://github.com/gameap/gameapctl/releases/download/v0.9.4/gameapctl-v0.9.4-linux-amd64.tar.gz
+curl -OL https://github.com/gameap/gameapctl/releases/download/v0.10.0/gameapctl-v0.10.0-linux-amd64.tar.gz
 ```
 ```
-tar -xvf gameapctl-v0.9.4-linux-amd64.tar.gz -C /usr/local/bin
+tar -xvf gameapctl-v0.10.0-linux-amd64.tar.gz -C /usr/local/bin
 ```
 > [!TIP]
 > For Windows you can manually download from Github: https://github.com/gameap/gameapctl/releases
