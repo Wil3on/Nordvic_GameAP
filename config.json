@@ -1,70 +1,72 @@
 {
-  "a2s": {
-    "address": "0.0.0.0",
-    "port": 26981
-  },
-  "bindAddress": "0.0.0.0",
-  "bindPort": 2001,
-  "game": {
-    "admins": [
-      "76561198200329058"
-    ],
-    "crossPlatform": true,
-    "gameProperties": {
-      "VONDisableDirectSpeechUI": false,
-      "VONDisableUI": false,
-      "battlEye": true,
-      "disableThirdPerson": false,
-      "fastValidation": true,
-      "missionHeader": {
-        "m_bIsSavingEnabled": true,
-        "m_bLoadOnStart": true,
-        "m_eDefaultGameFlags": "6",
-        "m_eEditableGameFlags": 6,
-        "m_iKillFeedType": "20",
-        "m_iMaximumRespawnRadios": 3,
-        "m_iPlayerCount": 128,
-        "m_iReceiveKillFeedType": "0",
-        "m_iZoneEnd": "160",
-        "m_sName": "Conflict - Everon",
-        "m_sSaveFileName": "Conflict_Everon_Save",
-        "other": "values"
-      },
-      "networkViewDistance": 1000,
-      "serverMaxViewDistance": 2500,
-      "serverMinGrassDistance": 50
-    },
-    "maxPlayers": 128,
-    "mods": [],
-    "name": "Nordvic Server - Everon",
-    "password": "",
-    "passwordAdmin": "SandMan504",
-    "scenarioId": "{ECC61978EDCC2B5A}Missions/23_Campaign.conf",
-    "supportedPlatforms": [
-      "PLATFORM_PC",
-      "PLATFORM_XBL",
-      "PLATFORM_PSN"
-    ],
-    "visible": true
-  },
-  "operating": {
-    "aiLimit": -1,
-    "disableAI": false,
-    "joinQueue": {
-      "maxSize": 25
-    },
-    "lobbyPlayerSynchronise": true,
-    "playerSaveTime": 110,
-    "slotReservationTimeout": 60
-  },
-  "publicAddress": "0.0.0.0",
-  "publicPort": 2001,
-  "rcon": {
-    "address": "0.0.0.0",
-    "blacklist": [],
-    "password": "SandMan504",
-    "permission": "monitor",
-    "port": 19999,
-    "whitelist": []
-  }
+	"bindAddress": "localip",
+	"bindPort": 2001,
+	"publicAddress": "publicip",
+	"publicPort": 2001,
+	"a2s": {
+		"address": "localip",
+		"port": 17777
+	},
+	"rcon": {
+		"address": "localip",
+		"port": 19999,
+		"password": "MyPassRcon",
+		"permission": "monitor",
+		"blacklist": [],
+		"whitelist": []
+	},
+	"game": {
+  		"name":"GameAP Server",
+		"password": "",
+		"passwordAdmin": "MyPass",
+		"admins" : [
+			"000000000000000"
+		],
+		"scenarioId": "{ECC61978EDCC2B5A}Missions/23_Campaign.conf",
+		"maxPlayers": 128,
+		"visible": true,
+		"crossPlatform": true,
+		"supportedPlatforms": [
+			"PLATFORM_PC",
+			"PLATFORM_XBL"
+		],
+		"gameProperties": {
+			"serverMaxViewDistance": 2500,
+			"serverMinGrassDistance": 50,
+			"networkViewDistance": 1000,
+			"disableThirdPerson": true,
+			"fastValidation": true,
+			"battlEye": true,
+			"VONDisableUI": true,
+			"VONDisableDirectSpeechUI": true,
+			"missionHeader": {
+				"m_iPlayerCount": 40,
+				"m_eEditableGameFlags": 6,
+				"m_eDefaultGameFlags": 6,
+				"other": "values",
+				"m_ChatMessageRoles": {
+				"m_sAdminColorRGB": "194 73 179",
+				"m_sGMColorRGB": "111 240 85",
+				"m_bUseFactionColor": 1,
+				"m_bUseGMColor": 1,
+				"m_bUseAdminColor": 1
+				}
+			}
+		},
+		"mods": [
+{
+  "modId": "5AAAC70D754245DD",
+  "name": "Server Admin Tools",
+  "version": ""
+}
+		]
+	},
+	"operating": {
+		"lobbyPlayerSynchronise": true,
+		"joinQueue" : {
+			"maxSize" : 50
+		},
+		"disableNavmeshStreaming": [
+		]
+	}
 }
