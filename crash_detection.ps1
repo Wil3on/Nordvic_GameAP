@@ -3,17 +3,21 @@
 # --- Configuration ---
 # Server and Paths
 $serverExePath     = "C:\servers\delta\ArmaReforgerServer.exe"
-$serverWorkingDir  = "C:\gameap\servers\9e9916c6-0899-4fea-bb29-1d21b82ebd51"
+$serverWorkingDir  = "C:\gameap\servers\9e9903fc-4af0-4647-a343-3cf8f98f3a69"
 # !! IMPORTANT: Verify this is the correct user profile name !!
-$logDirectory      = "C:\gameap\servers\9e9916c6-0899-4fea-bb29-1d21b82ebd51\profile\logs"
+$logDirectory      = "C:\gameap\servers\9e9903fc-4af0-4647-a343-3cf8f98f3a69\profile\logs"
 $updateIntervalSec = 30 # How often to check the logs and process status (in seconds)
 
 # Incident Logging
 $incidentLogPath = Join-Path -Path $serverWorkingDir -ChildPath "incident.json" # Log file in the server directory
 $pidFilePath = Join-Path -Path $serverWorkingDir -ChildPath "server.pid" # PID file in the server directory
-# Stats logging
-$statsLogPath = Join-Path -Path $serverWorkingDir -ChildPath "server_data.txt" # Stats log file
-$statsLogIntervalSec = 60 # How often to log stats (in seconds)
+
+# --- NEW: Server Data Logging Configuration ---
+$serverDataLogFolder = "server_data_logs" # Subfolder name within $serverWorkingDir for server data logs
+$serverDataLogIntervalHours = 24 # How often to create a NEW server data log file (in hours)
+$statsLogIntervalSec = 60 # How often to WRITE a line to the CURRENT server data log (in seconds)
+# --- End Server Data Logging Configuration ---
+
 $crashKeywords   = @(
     "Application crashed!",
     "FATAL ERROR",
@@ -144,31 +148,90 @@ function Log-Incident {
 }
 # --- End Incident Logging Function ---
 
-# --- Stats Logging Function ---
+# --- Function to Determine Current Server Data Log Path ---
+function Get-CurrentServerDataLogPath {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$LogDirectoryPath # The dedicated folder for these logs
+    )
+
+    $todayDateStr = Get-Date -Format 'dd.MM.yyyy'
+    $baseFileName = "server_data-$todayDateStr"
+    $filter = "$baseFileName`_ID-*.txt" # Use backtick to escape underscore if needed in filter
+
+    # Find existing files for today to determine the next ID
+    $existingFiles = Get-ChildItem -Path $LogDirectoryPath -Filter $filter -File -ErrorAction SilentlyContinue
+
+    $maxId = 0
+    if ($existingFiles) {
+        foreach ($file in $existingFiles) {
+            # Extract ID using regex for robustness (handles ID numbers)
+            if ($file.Name -match '_ID-(\d+)\.txt$') {
+                $currentId = [int]$matches[1]
+                if ($currentId -gt $maxId) {
+                    $maxId = $currentId
+                }
+            }
+        }
+    }
+
+    $nextId = $maxId + 1
+    $newFileName = "$baseFileName`_ID-$nextId.txt"
+    $fullPath = Join-Path -Path $LogDirectoryPath -ChildPath $newFileName
+    return $fullPath
+}
+# --- End Log Path Function ---
+
+
+# --- Stats Logging Function (Modified) ---
 function Write-StatsLog {
     param(
         [Parameter(Mandatory=$true)]
+        [string]$TargetPath, # The full path to the current log file
+
+        [Parameter(Mandatory=$true)]
         [string]$FPS,
-        
+
         [Parameter(Mandatory=$true)]
         [string]$Players
     )
-    
-    $timestamp = Get-Date -Format "dd/MM/yyyy HH:mm"
+
+    $timestamp = Get-Date -Format "dd/MM/yyyy HH:mm:ss" # Added seconds for more granularity
     $logLine = "[$timestamp] Server FPS: $FPS | Players: $Players"
-    
+
     try {
-        Add-Content -Path $statsLogPath -Value $logLine -Encoding UTF8 -ErrorAction Stop
-        Write-Verbose "Stats logged to $statsLogPath"
+        # Ensure the directory exists just in case (should be created earlier, but good practice)
+        $targetDir = Split-Path -Path $TargetPath -Parent
+        if (-not (Test-Path $targetDir -PathType Container)) {
+            New-Item -Path $targetDir -ItemType Directory -Force -ErrorAction Stop | Out-Null
+        }
+
+        Add-Content -Path $TargetPath -Value $logLine -Encoding UTF8 -ErrorAction Stop
+        Write-Verbose "Stats logged to $TargetPath"
     } catch {
-        Write-Warning "Failed to write to stats log: $($_.Exception.Message)"
+        Write-Warning "Failed to write to server data log '$TargetPath': $($_.Exception.Message)"
     }
 }
-
 # --- End Stats Logging Function ---
+
 
 # Store the original window title
 $originalTitle = $Host.UI.RawUI.WindowTitle
+
+# --- Create Server Data Log Directory ---
+$fullServerDataLogPath = Join-Path -Path $serverWorkingDir -ChildPath $serverDataLogFolder
+if (-not (Test-Path $fullServerDataLogPath -PathType Container)) {
+    try {
+        Write-Host "Creating server data log directory: '$fullServerDataLogPath'" -ForegroundColor Cyan
+        New-Item -Path $fullServerDataLogPath -ItemType Directory -Force -ErrorAction Stop | Out-Null
+    } catch {
+        Write-Error "FATAL: Could not create server data log directory '$fullServerDataLogPath'. Exiting. Error: $($_.Exception.Message)"
+        exit 1 # Exit if we can't create the log directory
+    }
+} else {
+    Write-Host "Server data log directory found: '$fullServerDataLogPath'" -ForegroundColor DarkGray
+}
+# --- End Directory Creation ---
 
 # --- Check for Existing Server Processes ---
 Write-Host "Checking for existing ArmaReforgerServer processes..." -ForegroundColor Yellow
@@ -178,7 +241,7 @@ if ($existingServers) {
     # Use the first existing process
     $serverProcess = $existingServers[0]
     Write-Host "Using existing server process with ID: $($serverProcess.Id)" -ForegroundColor Green
-    
+
     # Write PID to file if it doesn't exist
     if (-not (Test-Path $pidFilePath)) {
         try {
@@ -199,11 +262,30 @@ $lastFpsValue = "N/A" # Store the last known FPS
 $lastPlayerCount = "N/A" # Store the last known player count
 $memUsageMB = "N/A"
 $formattedUptime = "N/A" # For formatted uptime string
-$lastStatsLogTime = [DateTime]::Now # Initialize last stats log time
+$lastStatsLogTime = [DateTime]::MinValue # Initialize last stats log time (force first log)
+
+# Variables for managing periodic server data log files
+$currentServerDataLogPath = $null # Holds the path to the currently active data log file
+$nextServerDataLogCreationTime = [DateTime]::MinValue # Initialize to ensure first check creates a file
 
 try {
     while ($true) {
-        # --- Get Latest Log Directory and Path ---
+        $currentTime = [DateTime]::Now # Get current time once per loop iteration
+
+        # --- Determine/Update Current Server Data Log File ---
+        if ($null -eq $currentServerDataLogPath -or $currentTime -ge $nextServerDataLogCreationTime) {
+            $previousLogPath = $currentServerDataLogPath
+            $currentServerDataLogPath = Get-CurrentServerDataLogPath -LogDirectoryPath $fullServerDataLogPath
+
+            if ($currentServerDataLogPath -ne $previousLogPath) {
+                 Write-Host "[$($currentTime.ToString('dd/MM/yyyy HH:mm'))] Using new server data log file: '$($currentServerDataLogPath | Split-Path -Leaf)'" -ForegroundColor Cyan
+                 # Set the time for the *next* file creation based on the *start* of this interval
+                 $nextServerDataLogCreationTime = $currentTime.AddHours($serverDataLogIntervalHours)
+                 Write-Host "  -> Next new log file scheduled around: $($nextServerDataLogCreationTime.ToString('dd/MM/yyyy HH:mm'))" -ForegroundColor DarkGray
+            }
+        }
+
+        # --- Get Latest Log Directory and Path (for crash/FPS check) ---
         $latestLogSubDir = Get-ChildItem -Path $logDirectory -Directory | Sort-Object CreationTime -Descending | Select-Object -First 1
         $consoleLogPath = $null # Reset in case directory disappears
         if ($latestLogSubDir -and (Test-Path $latestLogSubDir.FullName)) {
@@ -216,7 +298,7 @@ try {
             if ($existingServers) {
                 $serverProcess = $existingServers[0]
                 Write-Host "Found ArmaReforgerServer process with ID: $($serverProcess.Id)" -ForegroundColor Green
-                
+
                 # Write PID to file
                 try {
                     Write-Verbose "Writing PID $($serverProcess.Id) to $pidFilePath"
@@ -232,25 +314,26 @@ try {
         if ($serverProcess) {
             try {
                 $serverProcessInfo = Get-Process -Id $serverProcess.Id -ErrorAction Stop
-                
+
                 # --- Get Process Info (Memory, Uptime) ---
                 $memUsageMB = [Math]::Round($serverProcessInfo.WorkingSet / 1MB, 0)
                 # Calculate uptime TimeSpan
-                $uptime = [datetime]::Now - $serverProcessInfo.StartTime
+                $uptime = $currentTime - $serverProcessInfo.StartTime # Use $currentTime for consistency
                 # Format uptime
                 if ($uptime.TotalSeconds -lt 60) {
                     $formattedUptime = "{0:0}s" -f $uptime.TotalSeconds # Show only seconds
                 } elseif ($uptime.TotalHours -lt 1) {
                     $formattedUptime = "{0:0}m:{1:00}s" -f $uptime.Minutes, $uptime.Seconds # Show minutes and seconds
                 } else {
-                    $formattedUptime = "{0:0}h:{1:00}m:{2:00}s" -f $uptime.Hours, $uptime.Minutes, $uptime.Seconds # Show hours, minutes, and seconds
+                    # Include days if uptime is long
+                    $formattedUptime = "{0}d {1:00}h:{2:00}m:{3:00}s" -f $uptime.Days, $uptime.Hours, $uptime.Minutes, $uptime.Seconds
                 }
             } catch {
                 Write-Warning "Server process (Last Known PID: $($serverProcess.Id)) not found."
                 $serverProcess = $null
                 $memUsageMB = "N/A"
                 $formattedUptime = "N/A"
-                
+
                 # Clean up PID file for the stopped process
                 if (Test-Path $pidFilePath) {
                     Write-Verbose "Removing PID file for stopped process: $pidFilePath"
@@ -264,7 +347,7 @@ try {
         $statusMessage = if ($serverProcess) { "Running" } else { "No Server" } # Default status
 
         try {
-            # Get the latest log file
+            # Get the latest log file (for crash/FPS check)
             if ($latestLogSubDir) {
                 if ($consoleLogPath -and (Test-Path $consoleLogPath -PathType Leaf)) {
                     # Read the content of the console.log file
@@ -285,7 +368,7 @@ try {
                                 $crashUptime = $null
                                 if ($serverProcess -and $serverProcess.StartTime) { # Check if we have StartTime
                                      try {
-                                         $crashUptime = [datetime]::Now - $serverProcess.StartTime
+                                         $crashUptime = $currentTime - $serverProcess.StartTime # Use $currentTime
                                      } catch { Write-Warning "Could not calculate uptime for crash log." }
                                 }
 
@@ -326,6 +409,7 @@ try {
 
                         # If crash was detected and handled, skip regular parsing
                         if ($crashDetected) {
+                            Start-Sleep -Seconds $updateIntervalSec # Still wait before next loop iteration
                             continue # Go to the top of the main 'while' loop
                         }
 
@@ -340,37 +424,41 @@ try {
                             if ($matchInfo -and $matchInfo.Matches[0].Groups[1].Success -and $matchInfo.Matches[0].Groups[2].Success) {
                                 $currentFps = $matchInfo.Matches[0].Groups[1].Value
                                 $currentPlayerCount = $matchInfo.Matches[0].Groups[2].Value
-                                $timestamp = Get-Date -Format "dd/MM/yyyy HH:mm"
-                                Write-Host "[$timestamp] Server FPS: $currentFps | Players: $currentPlayerCount" -ForegroundColor Green
+                                $timestampStr = $currentTime.ToString("dd/MM/yyyy HH:mm") # Use consistent timestamp
+                                Write-Host "[$timestampStr] Server FPS: $currentFps | Players: $currentPlayerCount" -ForegroundColor Green
                                 $lastFpsValue = $currentFps # Update last known good value
                                 $lastPlayerCount = $currentPlayerCount # Update last known good value
                                 $statusMessage = "OK"
-                                
-                                # Check if it's time to log stats
-                                $currentTime = [DateTime]::Now
+
+                                # --- Check if it's time to log stats to the CURRENT data file ---
                                 if (($currentTime - $lastStatsLogTime).TotalSeconds -ge $statsLogIntervalSec) {
-                                    Write-StatsLog -FPS $currentFps -Players $currentPlayerCount
-                                    $lastStatsLogTime = $currentTime
+                                    if ($null -ne $currentServerDataLogPath) { # Ensure we have a valid path
+                                        Write-StatsLog -TargetPath $currentServerDataLogPath -FPS $currentFps -Players $currentPlayerCount
+                                        $lastStatsLogTime = $currentTime # Update time of last STATS WRITE
+                                    } else {
+                                        Write-Warning "Cannot write stats log, current server data log path is not set."
+                                    }
                                 }
-                            }
-                        }
-                    }
-                }
-            }
+                            } # End if ($matchInfo...)
+                        } # End if ($serverProcess)
+                    } # End if ($logContent)
+                } # End if ($consoleLogPath...)
+            } # End if ($latestLogSubDir)
         } catch {
             $statusMessage = "LogReadErr: $($_.Exception.Message.Split([Environment]::NewLine)[0])" # General error during log check
+            Write-Warning "Error during log processing: $statusMessage"
         }
 
         # Update window title with info
         if ($serverProcess) {
-            $Host.UI.RawUI.WindowTitle = "Arma Reforger Server | FPS: $currentFps | Players: $currentPlayerCount | Uptime: $formattedUptime | PID: $($serverProcess.Id)"
+            $Host.UI.RawUI.WindowTitle = "Arma Reforger Server | FPS: $currentFps | Players: $currentPlayerCount | Uptime: $formattedUptime | Mem: ${memUsageMB}MB | PID: $($serverProcess.Id)"
         } else {
             $Host.UI.RawUI.WindowTitle = "Arma Reforger Server | Status: No Server Running | Last FPS: $lastFpsValue | Last Players: $lastPlayerCount"
         }
-        
+
         # Wait before next check
         Start-Sleep -Seconds $updateIntervalSec
-    }
+    } # End while ($true)
 }
 finally {
     # Restore the original title when the script exits (normally or via error/Ctrl+C)
@@ -384,12 +472,16 @@ finally {
     }
 
     # Log shutdown if we were monitoring a server
-    if ($serverProcess -and (-not $serverProcess.HasExited)) {
-        $shutdownUptime = $null
-        try {
-            $shutdownUptime = [datetime]::Now - $serverProcess.StartTime
-        } catch { }
-        Log-Incident -IncidentType "Shutdown" -ProcessUptime $shutdownUptime
+    if ($serverProcess -and $serverProcess.Id -ne $null) { # Check if we have a valid process ID
+        # Attempt to refresh process info one last time before logging shutdown
+         $finalProcessInfo = Get-Process -Id $serverProcess.Id -ErrorAction SilentlyContinue
+         if ($finalProcessInfo -and (-not $finalProcessInfo.HasExited)) {
+             $shutdownUptime = $null
+             try {
+                 $shutdownUptime = [datetime]::Now - $finalProcessInfo.StartTime
+             } catch { }
+             Log-Incident -IncidentType "Shutdown" -ProcessUptime $shutdownUptime
+             Write-Host "Logged server shutdown." -ForegroundColor DarkGray
+         }
     }
 }
-s
