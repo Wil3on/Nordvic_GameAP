@@ -61,12 +61,14 @@
 }
 		]
 	},
-	"operating": {
-		"lobbyPlayerSynchronise": true,
-		"joinQueue" : {
-			"maxSize" : 50
-		},
-		"disableNavmeshStreaming": [
-		]
-	}
+    "operating": {
+        "playerSaveTime": 250,
+        "slotReservationTimeout": 60,
+        "disableServerShutdown": false,
+        "lobbyPlayerSynchronise": true,
+        "joinQueue": {
+            "maxSize": 50
+        },
+        "disableNavmeshStreaming": []
+    }
 }
