@@ -2,7 +2,8 @@
 Nordvic Game Servers
 
 > [!WARNING]
-> **Startup Command for Linux servers**
+> **Startup Command for Linux servers** ![image](https://github.com/user-attachments/assets/75f01492-9677-4e37-86c9-74e85a5e6f48)
+
 
 ```
 ./ArmaReforgerServer -bindIP {ip} -bindPort {port} -a2sIpAddress {ip} -a2sPort {query_port} -logStats {logStatsInSec} -gproj ./addons/data/ArmaReforger.gproj -config ./config.json -profile ./profile -backendlog -nothrow -listScenarios -maxFPS {setMaxFps} -autoreload {autoreload} -loadSessionSave {loadSessionSave}
