@@ -11,6 +11,7 @@ Nordvic Game Servers
 ```
 ./ArmaReforgerServer -gproj ./addons/data/ArmaReforger.gproj -config ./config.json -profile ./profile -maxFPS 100 -freezeCheck 25 -freezeCheckMode kill -autoreload 10 -logStats 60000 -logFS -backendlog -nothrow -addonsRepair
 ```
+
 > **Startup Command for Windows servers**
 
 ```
