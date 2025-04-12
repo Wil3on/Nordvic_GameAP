@@ -2,7 +2,8 @@
 Nordvic Game Servers
 
 > [!WARNING]
-> **Startup Command for Linux servers** ![image](https://github.com/user-attachments/assets/d8466b51-0c36-412d-acd1-fb0a26b13e83)
+> **Startup Command for Linux servers** <img src="https://github.com/user-attachments/assets/d8466b51-0c36-412d-acd1-fb0a26b13e83" width="300" alt="image">
+
 
 
 
