@@ -20,7 +20,7 @@
 		"password": "",
 		"passwordAdmin": "MyPass",
 		"admins" : [
-			"000000000000000"
+			"66561199094966237"
 		],
 		"scenarioId": "{ECC61978EDCC2B5A}Missions/23_Campaign.conf",
 		"maxPlayers": 128,
@@ -43,14 +43,7 @@
 				"m_iPlayerCount": 40,
 				"m_eEditableGameFlags": 6,
 				"m_eDefaultGameFlags": 6,
-				"other": "values",
-				"m_ChatMessageRoles": {
-				"m_sAdminColorRGB": "194 73 179",
-				"m_sGMColorRGB": "111 240 85",
-				"m_bUseFactionColor": 1,
-				"m_bUseGMColor": 1,
-				"m_bUseAdminColor": 1
-				}
+				"other": "values"
 			}
 		},
 		"mods": [
@@ -62,7 +55,7 @@
 		]
 	},
     "operating": {
-        "playerSaveTime": 250,
+        "playerSaveTime": 420,
         "slotReservationTimeout": 60,
         "disableServerShutdown": false,
         "lobbyPlayerSynchronise": true,
