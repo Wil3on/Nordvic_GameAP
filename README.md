@@ -2,22 +2,19 @@
 Nordvic Game Servers
 
 > [!WARNING]
-> **Startup Command for Linux servers** <img src="https://github.com/user-attachments/assets/d8466b51-0c36-412d-acd1-fb0a26b13e83" width="24" alt="image">
+> **Startup Command for Linux servers** <img src="https://github.com/user-attachments/assets/d8466b51-0c36-412d-acd1-fb0a26b13e83" width="20" alt="image">
 ```
 ./ArmaReforgerServer -bindIP {ip} -bindPort {port} -a2sIpAddress {ip} -a2sPort {query_port} -logStats {logStatsInSec} -gproj ./addons/data/ArmaReforger.gproj -config ./config.json -profile ./profile -backendlog -nothrow -listScenarios -maxFPS {setMaxFps} -autoreload {autoreload} -loadSessionSave {loadSessionSave}
 ```
-> **Startup Command for Linux servers CLEAN** <img src="https://github.com/user-attachments/assets/d8466b51-0c36-412d-acd1-fb0a26b13e83" width="24" alt="image">
+> **Startup Command for Linux servers CLEAN** <img src="https://github.com/user-attachments/assets/d8466b51-0c36-412d-acd1-fb0a26b13e83" width="20" alt="image">
 ```
 ./ArmaReforgerServer -gproj ./addons/data/ArmaReforger.gproj -config ./config.json -profile ./profile -maxFPS 100 -freezeCheck 25 -freezeCheckMode kill -autoreload 10 -logStats 60000 -logFS -backendlog -nothrow -addonsRepair
 ```
-
-> **Startup Command for Windows servers** <img src="https://github.com/user-attachments/assets/36bc22b3-4da2-451d-8d1f-1117a0d1daec" width="24" alt="image">
-
+> **Startup Command for Windows servers** <img src="https://github.com/user-attachments/assets/36bc22b3-4da2-451d-8d1f-1117a0d1daec" width="20" alt="image">
 ```
 ArmaReforgerServer.exe -bindIP {ip} -bindPort {port} -a2sIpAddress {ip} -a2sPort {query_port} -logStats {logStatsInSec} -config .\config.json -profile .\profile -backendlog -nothrow -maxFPS {setMaxFps} -autoreload {autoreload} -loadSessionSave {loadSessionSave}
 ```
-> **Startup Command for Windows servers** <img src="https://github.com/user-attachments/assets/36bc22b3-4da2-451d-8d1f-1117a0d1daec" width="24" alt="image">
-
+> **Startup Command for Windows servers** <img src="https://github.com/user-attachments/assets/36bc22b3-4da2-451d-8d1f-1117a0d1daec" width="20" alt="image">
 ```
 ArmaReforgerServer.exe -config .\config.json -profile .\profile -maxFPS 100 -freezeCheck 25 -freezeCheckMode kill -autoreload 30 -logStats 60000 -AILimit 120 -logFS -addonsVerify -addonsRepair -backendlog -nothrow
 ```
