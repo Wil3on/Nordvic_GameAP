@@ -37,8 +37,8 @@
 			"disableThirdPerson": true,
 			"fastValidation": true,
 			"battlEye": true,
-			"VONDisableUI": true,
-			"VONDisableDirectSpeechUI": true,
+			"VONDisableUI": false,
+			"VONDisableDirectSpeechUI": false,
 			"missionHeader": {
 				"m_iPlayerCount": 40,
 				"m_eEditableGameFlags": 6,
