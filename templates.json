@@ -20,6 +20,7 @@
       "size": "10GB+",
       "remark": "Arma Reforger server using SteamCMD",
       "targetLink": "https://github.com/Wil3on/Nordvic_GameAP/raw/refs/heads/main/steamcmd.exe",
+      "targetLink": "https://raw.githubusercontent.com/Wil3on/Nordvic_GameAP/refs/heads/main/config.json",
       "author": "Bohemia Interactive",
       "setupInfo": {
         "type": "general",
