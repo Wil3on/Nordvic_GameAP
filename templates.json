@@ -25,7 +25,7 @@
         "type": "general",
         "startCommand": "ArmaReforgerServer.exe -config .\\config.json -profile .\\profile -maxFPS 100 -freezeCheck 25 -freezeCheckMode kill -autoreload 30 -logStats 60000 -AILimit 120 -logFS -addonsVerify -addonsRepair -backendlog -nothrow",
         "stopCommand": "^c",
-        "updateCommand": "\"{mcsm_workspace}/steamcmd.exe\" +force_install_dir \"{mcsm_workspace}\" +login anonymous +app_update 1874900 validate +quit && powershell -Command \"Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/Wil3on/Nordvic_GameAP/refs/heads/main/config.json' -OutFile '{mcsm_workspace}/config.json'\"",
+        "updateCommand": "powershell -Command \"New-Item -ItemType Directory -Path '{mcsm_workspace}/steamcmd' -Force; Invoke-WebRequest -Uri 'https://github.com/Wil3on/Nordvic_GameAP/raw/refs/heads/main/steamcmd.exe' -OutFile '{mcsm_workspace}/steamcmd/steamcmd.exe'; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/Wil3on/Nordvic_GameAP/refs/heads/main/config.json' -OutFile '{mcsm_workspace}/config.json'\" && \"{mcsm_workspace}/steamcmd/steamcmd.exe\" +force_install_dir \"{mcsm_workspace}\" +login anonymous +app_update 1874900 validate +quit",
         "ie": "utf-8",
         "oe": "utf-8"
       }
