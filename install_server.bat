@@ -6,8 +6,9 @@ echo ================================
 echo.
 
 REM Set variables
-set "INSTANCE_ID={mcsm_instance_id}"
-set "WORKSPACE={mcsm_workspace}"
+set "INSTANCE_ID=%1"
+REM Use current directory as workspace instead of relying on {mcsm_workspace} variable
+set "WORKSPACE=%CD%"
 set "STEAM_APP_ID=1874900"
 set "STEAMCMD_URL=https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
 set "STEAMCMD_ZIP=%WORKSPACE%\steamcmd.zip"
@@ -55,18 +56,29 @@ REM Run SteamCMD to install the server
 echo Current directory: %CD%
 echo SteamCMD directory: %STEAMCMD_DIR%
 
-REM Check if steamcmd.exe exists
-if not exist "%STEAMCMD_DIR%\steamcmd.exe" (
-    echo ERROR: steamcmd.exe not found in %STEAMCMD_DIR%
+REM Verify the steamcmd directory was created properly
+if exist "%STEAMCMD_DIR%" (
+    echo SteamCMD directory exists
     dir "%STEAMCMD_DIR%"
+) else (
+    echo ERROR: SteamCMD directory was not created properly
     exit /b 1
 )
 
-REM Change to workspace directory and run steamcmd
-cd /d "%WORKSPACE%"
-echo Changed to directory: %CD%
+REM Check for steamcmd.exe directly or in possible subfolders
+if exist "%STEAMCMD_DIR%\steamcmd.exe" (
+    set "STEAMCMD_EXE=%STEAMCMD_DIR%\steamcmd.exe"
+) else if exist "%STEAMCMD_DIR%\Steam\steamcmd.exe" (
+    set "STEAMCMD_EXE=%STEAMCMD_DIR%\Steam\steamcmd.exe"
+) else (
+    echo ERROR: Could not find steamcmd.exe in any expected location
+    dir "%STEAMCMD_DIR%" /s
+    exit /b 1
+)
 
-"%STEAMCMD_DIR%\steamcmd.exe" +login anonymous +force_install_dir "." +app_update %STEAM_APP_ID% validate +quit
+echo Found SteamCMD at: %STEAMCMD_EXE%
+
+"%STEAMCMD_EXE%" +login anonymous +force_install_dir "%WORKSPACE%" +app_update %STEAM_APP_ID% validate +quit
 
 echo.
 echo Installation complete.
