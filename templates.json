@@ -15,14 +15,14 @@
       "hardware": "RAM 8G+",
       "size": "10GB+",
       "remark": "Arma Reforger server using SteamCMD",
-      "targetLink": "https://github.com/Wil3on/Nordvic_GameAP/raw/refs/heads/main/steamcmd.exe",
+      "targetLink": "https://raw.githubusercontent.com/Wil3on/Nordvic_GameAP/refs/heads/main/install_server.bat",
       "author": "Bohemia Interactive",
       "setupInfo": {
         "type": "steam/universal",
         "processType": "general",
         "startCommand": "ArmaReforgerServer.exe -config .\\config.json -profile .\\profile -maxFPS 100 -freezeCheck 25 -freezeCheckMode kill -autoreload 30 -logStats 60000 -AILimit 120 -logFS -addonsVerify -addonsRepair -backendlog -nothrow",
         "stopCommand": "^c",
-        "updateCommand": "steamcmd.exe +force_install_dir . +login anonymous +app_update 1874900 validate +quit",
+        "updateCommand": "cmd /c "{mcsm_workspace}\install_server.bat"",
         "ie": "utf-8",
         "oe": "utf-8"
       }
