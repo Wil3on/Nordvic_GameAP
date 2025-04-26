@@ -52,7 +52,8 @@ echo This may take some time depending on the server and your internet connectio
 echo.
 
 REM Run SteamCMD to install the server
-"%STEAMCMD_DIR%\steamcmd.exe" +login anonymous +force_install_dir "%WORKSPACE%" +app_update %STEAM_APP_ID% validate +quit
+cd "%WORKSPACE%"
+"%STEAMCMD_DIR%\steamcmd.exe" +login anonymous +force_install_dir "." +app_update %STEAM_APP_ID% validate +quit
 
 echo.
 echo Installation complete.
