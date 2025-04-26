@@ -52,7 +52,20 @@ echo This may take some time depending on the server and your internet connectio
 echo.
 
 REM Run SteamCMD to install the server
-cd "%WORKSPACE%"
+echo Current directory: %CD%
+echo SteamCMD directory: %STEAMCMD_DIR%
+
+REM Check if steamcmd.exe exists
+if not exist "%STEAMCMD_DIR%\steamcmd.exe" (
+    echo ERROR: steamcmd.exe not found in %STEAMCMD_DIR%
+    dir "%STEAMCMD_DIR%"
+    exit /b 1
+)
+
+REM Change to workspace directory and run steamcmd
+cd /d "%WORKSPACE%"
+echo Changed to directory: %CD%
+
 "%STEAMCMD_DIR%\steamcmd.exe" +login anonymous +force_install_dir "." +app_update %STEAM_APP_ID% validate +quit
 
 echo.
