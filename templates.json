@@ -21,7 +21,7 @@
         "type": "general",
         "startCommand": "ArmaReforgerServer.exe -config .\\config.json -profile .\\profile -maxFPS 100 -freezeCheck 25 -freezeCheckMode kill -autoreload 30 -logStats 60000 -AILimit 120 -logFS -addonsVerify -addonsRepair -backendlog -nothrow",
         "stopCommand": "^c",
-        "updateCommand": "steamcmd.exe +force_install_dir \"{mcsm_workspace}\" +login anonymous +app_update 1874900 validate +quit",
+        "updateCommand": "steamcmd.exe +force_install_dir . +login anonymous +app_update 1874900 validate +quit",
         "ie": "utf-8",
         "oe": "utf-8"
       }
